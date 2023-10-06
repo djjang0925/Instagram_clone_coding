@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for post in posts %}
+  <div class="col">
+    <div class="card">
+      {% if post.image %}
+        <img src="{% url "post.image.url" %}" class="card-img-top" alt="image">
+      {% else %}
+      {% endif %}
+      <div class="card-body">
+        <p class="card-text">{{ post.content }}</p>
+      </div>
+      <div class="card-footer">
+        <small class="text-body-secondary">Last updated: {{ post.updated_at }}</small>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}
