@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
-  {% for post in posts %}
-  <div class="col">
-    <div class="card">
-      {% if post.image %}
-        <img src="{% url "post.image.url" %}" class="card-img-top" alt="image">
-      {% else %}
-      {% endif %}
-      <div class="card-body">
-        <p class="card-text">{{ post.content }}</p>
-      </div>
-      <div class="card-footer">
-        <small class="text-body-secondary">Last updated: {{ post.updated_at }}</small>
-      </div>
-    </div>
+{% if user.pk %}
+<h1>Hello! {{ user }}</h1>
+<form action="{% url "accounts:logout" %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="로그아웃" class="btn btn-secondary btn-sm">
+  <a class="btn btn-warning btn-sm" href="{% url "accounts:update" %}">프로필 수정</a>
+  <a class="btn btn-primary btn-sm" href="{% url "change_password" user.pk %}">비밀번호 변경</a>
+  <a class="btn btn-danger btn-sm" href="{% url "accounts:delete" %}">회원 탈퇴</a>
+</form>
+{% endif %}
+<br>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for post in posts %}
+    {% include "posts/post.html" %}
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 {% endblock content %}

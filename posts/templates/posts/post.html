@@ -1,0 +1,16 @@
+{% load static %}
+
+<div class="col">
+    <div class="card">
+      {% if post.image %}
+      <img src="{{ post.image.url }}" alt="image">
+      {% else %}
+      <img src="{% static 'none.png' %}" alt="none">
+      {% endif %}
+      <div class="card-body">
+        <p class="card-text">{{ post.content }}</p>
+        <a class="btn btn-info btn-sm" href="{% url "posts:update" post.pk %}">Edit</a>
+        <a class="btn btn-danger btn-sm" href="{% url "posts:delete" post.pk %}"> Delete</a>
+      </div>
+    </div>
+  </div>
