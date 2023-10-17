@@ -1,13 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm, ProfileModelForm
+from .models import Profile
 
 # Create your views here.
+
+
 @require_http_methods(['GET', 'POST'])
 def login(request):
     if request.method == 'POST':
@@ -36,7 +39,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request,user)
+            auth_login(request, user)
             return redirect('posts:index')
     else:
         form = CustomUserCreationForm()
@@ -87,3 +90,34 @@ def change_password(request, user_pk):
         'form': form,
     }
     return render(request, 'accounts/change_password.html', context)
+
+
+@login_required
+@require_safe
+def profile(request, user_name):
+    person = get_object_or_404(get_user_model(), username=user_name)
+    profile = get_object_or_404(Profile, pk=person.pk)
+    context = {
+        'person': person,
+        'profile': profile,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def profile_update(request):
+    profile = get_object_or_404(Profile, pk=request.user.pk)
+    if request.method == 'POST':
+        form = ProfileModelForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect('profile', request.user)
+    else:
+        form = ProfileModelForm(instance=profile)
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/profile_update.html', context)

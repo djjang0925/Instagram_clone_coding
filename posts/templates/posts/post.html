@@ -12,5 +12,10 @@
         <a class="btn btn-info btn-sm" href="{% url "posts:update" post.pk %}">Edit</a>
         <a class="btn btn-danger btn-sm" href="{% url "posts:delete" post.pk %}"> Delete</a>
       </div>
+      <div class="card-footer">
+        <small class="text-body-secondary">
+          작성자 : <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+        </small>
+      </div>
     </div>
   </div>

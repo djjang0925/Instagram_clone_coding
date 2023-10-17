@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 
 # Create your views here.
+
+
 @login_required
 @require_safe
 def index(request):
@@ -21,7 +23,9 @@ def create(request):
     if request.method == 'POST':
         form = PostModelForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
             return redirect('posts:index')
     else:
         form = PostModelForm()

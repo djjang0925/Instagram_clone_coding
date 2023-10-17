@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load bootstrap5 %}
+
+{% block content %}
+<h1>Profile Update</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input class="btn btn-primary btn-sm" type="submit" value="변경">
+</form>
+{% endblock content %}

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'posts',
     'accounts',
     'bootstrap5',
+    'imagekit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,7 +125,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-MEDIA_ROOT = BASE_DIR / 'media' 
+MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = 'media/'
 
