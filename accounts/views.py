@@ -96,7 +96,8 @@ def change_password(request, user_pk):
 @require_safe
 def profile(request, user_name):
     person = get_object_or_404(get_user_model(), username=user_name)
-    profile = get_object_or_404(Profile, pk=person.pk)
+    profile = Profile.objects.filter(user=request.user).first()
+
     context = {
         'person': person,
         'profile': profile,
@@ -107,7 +108,10 @@ def profile(request, user_name):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def profile_update(request):
-    profile = get_object_or_404(Profile, pk=request.user.pk)
+    profile, create = Profile.objects.get_or_create(user_id=request.user.id)
+
+    # profile = Profile.objects.get(user_id=request.user.id)
+
     if request.method == 'POST':
         form = ProfileModelForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
