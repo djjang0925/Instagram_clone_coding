@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>환영합니다! {{ user }}</h1>
+<h1>{{ profile.user }}'s Profile</h1>
 <div>
   {% if profile.image %}
   <img src="{{ profile.image_field.url }}" alt="img">

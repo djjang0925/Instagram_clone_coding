@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 
 class PostModelForm(forms.ModelForm):
@@ -16,3 +16,16 @@ class PostModelForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('user',)
+
+class CommentModelForm(forms.ModelForm):
+    content = forms.CharField(
+        label='',
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Leave comment here!' 
+            }
+        )
+    )
+    class Meta:
+        model = Comment
+        fields = ('content',)
