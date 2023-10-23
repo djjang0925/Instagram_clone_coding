@@ -1,31 +1,33 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ profile.user }}'s Profile</h1>
-<div>
-  {% if profile.image %}
-  <img src="{{ profile.image_field.url }}" alt="img">
+  <h1>{{ person.username }}'s Profile</h1>
+  {% if profile %}
+    <div>
+      {% if profile.image %}
+        <img src="{{ profile.image_field.url }}" alt="img" />
+      {% endif %}
+      {% if profile.nickname %}
+        <p>닉네임 : {{ profile.nickname }}</p>
+      {% endif %}
+      {% if profile.introduction %}
+        <p>자기소개 : {{ profile.introduction }}</p>
+      {% endif %}
+    </div>
   {% endif %}
-  {% if profile.nickname %}
-  <p>닉네임 : {{ profile.nickname }}</p>
+  {% if person == request.user %}
+    <form action="{% url 'accounts:logout' %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="로그아웃" class="btn btn-secondary btn-sm" />
+      <a class="btn btn-warning btn-sm" href="{% url 'accounts:profile_update' %}">프로필 수정</a>
+      <a class="btn btn-primary btn-sm" href="{% url 'change_password' user.pk %}">비밀번호 변경</a>
+      <a class="btn btn-danger btn-sm" href="{% url 'accounts:delete' %}">회원 탈퇴</a>
+    </form>
   {% endif %}
-  {% if profile.introduction %}
-  <p>자기소개 : {{ profile.introduction }}</p>
-  {% endif %}
-</div>
-{% if person == request.user %}
-<form action="{% url "accounts:logout" %}" method="POST">
-  {% csrf_token %}
-  <input type="submit" value="로그아웃" class="btn btn-secondary btn-sm">
-  <a class="btn btn-warning btn-sm" href="{% url "accounts:profile_update" %}">프로필 수정</a>
-  <a class="btn btn-primary btn-sm" href="{% url "change_password" user.pk %}">비밀번호 변경</a>
-  <a class="btn btn-danger btn-sm" href="{% url "accounts:delete" %}">회원 탈퇴</a>
-</form>
-{% endif %}
-<hr>
-<div class="row row-cols-1 row-cols-md-4 g-4">
-  {% for post in posts %}
-    {% include 'posts/post.html' %}
-  {% endfor %}
-</div>
-{% endblock content %}
+  <hr />
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for post in posts %}
+      {% include 'posts/post.html' %}
+    {% endfor %}
+  </div>
+{% endblock %}

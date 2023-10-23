@@ -96,7 +96,7 @@ def change_password(request, user_pk):
 @require_safe
 def profile(request, user_name):
     person = get_object_or_404(get_user_model(), username=user_name)
-    profile = Profile.objects.get(user=person.pk)
+    profile, create = Profile.objects.get_or_create(user_id=person.id)
 
     context = {
         'person': person,
