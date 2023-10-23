@@ -15,7 +15,7 @@ class PostModelForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ('user',)
+        exclude = ('user', 'like_users',)
 
 class CommentModelForm(forms.ModelForm):
     content = forms.CharField(

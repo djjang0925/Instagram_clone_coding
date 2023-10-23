@@ -3,8 +3,18 @@
 
 <div class="col">
   <div class="card">
-    <div class="card-header">
-      <small class="text-body-secondary">작성자 : <a href="{% url 'profile' post.user %}">{{ post.user }}</a></small>
+    <div class="card-header d-flex justify-content-between">
+      <small class="text-body-secondary mt-1">작성자 : <a href="{% url 'profile' post.user %}">{{ post.user }}</a></small>
+      <form action="{% url "posts:like" post.pk %}" method="POST">
+        {% csrf_token %}
+        <button class="bg-light" type="submit" style="border: 0;">
+          {% if request.user in post.like_users.all %}
+          <i class="fas fa-heart" style="color: #ee6363;"></i> {{ post.like_users.all.count}}
+          {% else %}
+          <i class="far fa-heart" style="color: #ee6363;"></i> {{ post.like_users.all.count}}
+          {% endif %}
+        </button>
+      </form>
     </div>
     {% if post.image %}
       <img src="{{ post.image.url }}" alt="image" />
@@ -30,7 +40,7 @@
           {% if comment.user == request.user %}
           <form action="{% url "posts:comment_delete" post.pk comment.pk %}" method="POST">
             {% csrf_token %}
-            <button type="submit" style="border: 0;">
+            <button class="bg-light" type="submit" style="border: 0;">
               <i class="fa-solid fa-x" style="color: #40caf1;"></i>
             </button>
           </form>

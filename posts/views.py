@@ -37,6 +37,18 @@ def create(request):
     return render(request, 'posts/form.html', context)
 
 
+
+@require_POST
+def like(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+
+    if request.user in post.like_users.all():
+        post.like_users.remove(request.user)
+    else:
+        post.like_users.add(request.user)
+    return redirect('posts:index')
+
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def delete(request, post_pk):
