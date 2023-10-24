@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <h1>Index</h1>
+  <hr>
   <div class="row row-cols-1 row-cols-md-4 g-4">
     {% for post in posts %}
       {% include 'posts/post.html' %}

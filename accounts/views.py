@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .forms import CustomUserChangeForm, CustomUserCreationForm, ProfileModelForm
 from .models import Profile
+from posts.forms import CommentModelForm
 
 # Create your views here.
 
@@ -97,12 +98,29 @@ def change_password(request, user_pk):
 def profile(request, user_name):
     person = get_object_or_404(get_user_model(), username=user_name)
     profile, create = Profile.objects.get_or_create(user_id=person.id)
+    form = CommentModelForm()
 
     context = {
         'person': person,
         'profile': profile,
+        'form': form,
     }
     return render(request, 'accounts/profile.html', context)
+
+
+@login_required
+@require_safe
+def liked_posts(request, user_name):
+    person = get_object_or_404(get_user_model(), username=user_name)
+    profile, create = Profile.objects.get_or_create(user_id=person.id)
+    form = CommentModelForm()
+
+    context = {
+        'person': person,
+        'profile': profile,
+        'form': form,
+    }
+    return render(request, 'accounts/profile_liked_posts.html', context)
 
 
 @login_required

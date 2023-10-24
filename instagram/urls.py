@@ -26,4 +26,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('<int:user_pk>/password', views.change_password, name='change_password'),
     path('<str:user_name>/', views.profile, name='profile'),
+    path('<str:user_name>/liked_posts', views.liked_posts, name='liked_posts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

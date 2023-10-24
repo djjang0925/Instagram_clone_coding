@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostModelForm, CommentModelForm
 from .models import Post, Comment
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 
@@ -35,7 +36,6 @@ def create(request):
         'form': form,
     }
     return render(request, 'posts/form.html', context)
-
 
 
 @require_POST
