@@ -3,7 +3,20 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h1>{{ person.username }}'s Profile</h1>
+<div class="col">
+  <span class="d-flex">
+
+    <h1>{{ person.username }}'s Profile</h1>
+    <form class="ms-2" action="{% url "accounts:follow" person.id %}" method='POST'>
+      {% csrf_token %}
+      {% if request.user in person.followers.all %}
+      <input class="btn btn-primary" type="submit" value="팔로우 취소">
+      {% else %}
+      <input class="btn btn-primary" type="submit" value="팔로우">
+      {% endif %}
+    </form>
+  </span>
+</div>
   {% if profile %}
     <div>
       {% if profile.image %}

@@ -143,3 +143,17 @@ def profile_update(request):
         'form': form,
     }
     return render(request, 'accounts/profile_update.html', context)
+
+
+@login_required
+@require_POST
+def follow(request, user_id):
+    you = get_object_or_404(get_user_model(), id=user_id)
+    me = request.user
+
+    if me != you:
+        if me in you.followers.all():
+            you.followers.remove(me)
+        else:
+            you.followers.add(me)
+    return redirect('profile', you)
